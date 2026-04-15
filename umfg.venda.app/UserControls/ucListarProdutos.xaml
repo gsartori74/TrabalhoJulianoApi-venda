@@ -14,7 +14,6 @@
                 <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
 
-            <!-- nesta primeira grid vamos apresentar os produtos !-->
             <Grid Grid.Row="0">
                 <ScrollViewer Margin="10">
                     <ListBox ItemsSource="{Binding Produtos}"
@@ -110,5 +109,5 @@
             </Grid>
         </Grid>
     </Viewbox>
-    
+
 </UserControl>

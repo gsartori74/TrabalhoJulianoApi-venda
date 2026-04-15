@@ -20,7 +20,12 @@ namespace umfg.venda.app.Abstracts
             set => SetField(ref _titulo, value);
         }
 
-        public UserControl UserControl { get; protected set; }
+        private UserControl _userControl;
+        public UserControl UserControl
+        {
+            get => _userControl;
+            protected set => SetField(ref _userControl, value);
+        }
         public IObserver MainWindow { get; protected set; }
 
         protected AbstractViewModel(string titulo)

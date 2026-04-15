@@ -12,6 +12,8 @@ namespace umfg.venda.app.ViewModels
     {
         private readonly PedidoModel _pedido;
 
+        public PedidoModel Pedido => _pedido;
+
 
         private string _nome = string.Empty;
         public string Nome

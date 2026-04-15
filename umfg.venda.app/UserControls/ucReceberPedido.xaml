@@ -3,100 +3,223 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
 
-    <Grid Background="#ECF0F1">
-        <StackPanel Width="380"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Margin="20">
+    <Viewbox Stretch="Uniform">
+        <Grid Background="#ECF0F1" Height="720" Width="1080">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="420"/>
+            </Grid.ColumnDefinitions>
 
-            <TextBlock Text="Dados do Pagamento"
-                       FontSize="22"
-                       FontWeight="SemiBold"
-                       HorizontalAlignment="Center"
-                       Margin="0,0,0,24"/>
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="50"/>
+                </Grid.RowDefinitions>
 
-            <TextBox Text="{Binding Nome, UpdateSourceTrigger=PropertyChanged}"
-                     Margin="0,8"
-                     materialDesign:HintAssist.Hint="Nome do Titular *"
-                     Style="{StaticResource MaterialDesignOutlinedTextBox}"/>
+                <TextBlock Grid.Row="0"
+                           Text="Itens do Pedido"
+                           FontSize="22"
+                           FontWeight="SemiBold"
+                           VerticalAlignment="Center"
+                           Margin="16,0,0,0"/>
 
-            <ComboBox SelectedValue="{Binding TipoCartao}"
-                      SelectedValuePath="Content"
-                      Margin="0,8"
-                      materialDesign:HintAssist.Hint="Tipo do Cartão *"
-                      Style="{StaticResource MaterialDesignOutlinedComboBox}">
-                <ComboBoxItem Content="Crédito"/>
-                <ComboBoxItem Content="Débito"/>
-            </ComboBox>
+                <DataGrid Grid.Row="1"
+                          ItemsSource="{Binding Pedido.Produtos}"
+                          HeadersVisibility="None"
+                          AutoGenerateColumns="False"
+                          HorizontalAlignment="Stretch"
+                          VerticalAlignment="Stretch"
+                          GridLinesVisibility="None"
+                          CanUserSortColumns="False"
+                          IsReadOnly="True"
+                          Margin="10,0,10,0">
+                    <DataGrid.Resources>
+                        <Style TargetType="DataGrid">
+                            <Setter Property="BorderThickness" Value="0"/>
+                        </Style>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="BorderThickness" Value="0"/>
+                            <Setter Property="BorderBrush" Value="#ECF0F1"/>
+                            <Setter Property="Background" Value="#ECF0F1"/>
+                            <Setter Property="Foreground" Value="Black"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="BorderBrush" Value="#E0E0E0"/>
+                                    <Setter Property="Background" Value="#E0E0E0"/>
+                                    <Setter Property="Foreground" Value="Black"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.Resources>
 
-            <TextBox Text="{Binding NumeroCartao, UpdateSourceTrigger=PropertyChanged}"
-                     MaxLength="19"
-                     Margin="0,8"
-                     materialDesign:HintAssist.Hint="Número do Cartão *"
-                     Style="{StaticResource MaterialDesignOutlinedTextBox}"/>
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Width="120">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Ellipse Height="90" Width="90" HorizontalAlignment="Center" Margin="5">
+                                        <Ellipse.Fill>
+                                            <ImageBrush ImageSource="{Binding Imagem}"/>
+                                        </Ellipse.Fill>
+                                    </Ellipse>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
 
-            <StackPanel Margin="0,8">
-                <TextBlock Text="Data de Validade (MM/aaaa) *"
-                           FontSize="12"
-                           Foreground="#757575"
-                           Margin="2,0,0,4"/>
-                <StackPanel Orientation="Horizontal">
+                        <DataGridTemplateColumn Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel VerticalAlignment="Center" Margin="5">
+                                        <TextBlock Text="{Binding Referencia}"
+                                                   FontWeight="SemiBold"
+                                                   FontSize="16"/>
+                                        <TextBlock Text="{Binding Descricao}"
+                                                   FontSize="15"
+                                                   TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
 
-                    <ComboBox SelectedValue="{Binding Mes}"
-                              SelectedValuePath="Content"
-                              Width="110"
-                              Margin="0,0,12,0"
-                              materialDesign:HintAssist.Hint="Mês"
-                              Style="{StaticResource MaterialDesignOutlinedComboBox}">
-                        <ComboBoxItem Content="01"/>
-                        <ComboBoxItem Content="02"/>
-                        <ComboBoxItem Content="03"/>
-                        <ComboBoxItem Content="04"/>
-                        <ComboBoxItem Content="05"/>
-                        <ComboBoxItem Content="06"/>
-                        <ComboBoxItem Content="07"/>
-                        <ComboBoxItem Content="08"/>
-                        <ComboBoxItem Content="09"/>
-                        <ComboBoxItem Content="10"/>
-                        <ComboBoxItem Content="11"/>
-                        <ComboBoxItem Content="12"/>
-                    </ComboBox>
+                        <DataGridTemplateColumn Width="110">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock Text="R$ "
+                                                   FontWeight="SemiBold"
+                                                   FontSize="16"
+                                                   VerticalAlignment="Center"/>
+                                        <TextBlock Text="{Binding Valor}"
+                                                   FontWeight="SemiBold"
+                                                   FontSize="16"
+                                                   VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
 
-                    <ComboBox SelectedValue="{Binding Ano}"
-                              SelectedValuePath="Content"
-                              Width="130"
-                              materialDesign:HintAssist.Hint="Ano"
-                              Style="{StaticResource MaterialDesignOutlinedComboBox}">
-                        <ComboBoxItem Content="2026"/>
-                        <ComboBoxItem Content="2027"/>
-                        <ComboBoxItem Content="2028"/>
-                        <ComboBoxItem Content="2029"/>
-                        <ComboBoxItem Content="2030"/>
-                        <ComboBoxItem Content="2031"/>
-                        <ComboBoxItem Content="2032"/>
-                        <ComboBoxItem Content="2033"/>
-                        <ComboBoxItem Content="2034"/>
-                        <ComboBoxItem Content="2035"/>
-                    </ComboBox>
-
+                <StackPanel Grid.Row="2"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Margin="0,0,16,0">
+                    <TextBlock Text="Total: "
+                               FontSize="18"
+                               FontWeight="SemiBold"
+                               VerticalAlignment="Center"/>
+                    <TextBlock Text="R$ "
+                               FontSize="18"
+                               FontWeight="SemiBold"
+                               VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding Pedido.Total}"
+                               FontSize="18"
+                               FontWeight="SemiBold"
+                               VerticalAlignment="Center"/>
                 </StackPanel>
+            </Grid>
+
+            <Rectangle Grid.Column="0"
+                       Width="1"
+                       HorizontalAlignment="Right"
+                       Fill="#BDBDBD"/>
+
+            <StackPanel Grid.Column="1"
+                        Width="380"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Margin="20">
+
+                <TextBlock Text="Dados do Pagamento"
+                           FontSize="22"
+                           FontWeight="SemiBold"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,24"/>
+
+                <TextBox Text="{Binding Nome, UpdateSourceTrigger=PropertyChanged}"
+                         Margin="0,8"
+                         materialDesign:HintAssist.Hint="Nome do Titular *"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"/>
+
+                <ComboBox SelectedValue="{Binding TipoCartao}"
+                          SelectedValuePath="Content"
+                          Margin="0,8"
+                          materialDesign:HintAssist.Hint="Tipo do Cartão *"
+                          Style="{StaticResource MaterialDesignOutlinedComboBox}">
+                    <ComboBoxItem Content="Crédito"/>
+                    <ComboBoxItem Content="Débito"/>
+                </ComboBox>
+
+                <TextBox Text="{Binding NumeroCartao, UpdateSourceTrigger=PropertyChanged}"
+                         MaxLength="19"
+                         Margin="0,8"
+                         materialDesign:HintAssist.Hint="Número do Cartão *"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"/>
+
+                <StackPanel Margin="0,8">
+                    <TextBlock Text="Data de Validade (MM/aaaa) *"
+                               FontSize="12"
+                               Foreground="#757575"
+                               Margin="2,0,0,4"/>
+                    <StackPanel Orientation="Horizontal">
+
+                        <ComboBox SelectedValue="{Binding Mes}"
+                                  SelectedValuePath="Content"
+                                  Width="110"
+                                  Margin="0,0,12,0"
+                                  materialDesign:HintAssist.Hint="Mês"
+                                  Style="{StaticResource MaterialDesignOutlinedComboBox}">
+                            <ComboBoxItem Content="01"/>
+                            <ComboBoxItem Content="02"/>
+                            <ComboBoxItem Content="03"/>
+                            <ComboBoxItem Content="04"/>
+                            <ComboBoxItem Content="05"/>
+                            <ComboBoxItem Content="06"/>
+                            <ComboBoxItem Content="07"/>
+                            <ComboBoxItem Content="08"/>
+                            <ComboBoxItem Content="09"/>
+                            <ComboBoxItem Content="10"/>
+                            <ComboBoxItem Content="11"/>
+                            <ComboBoxItem Content="12"/>
+                        </ComboBox>
+
+                        <ComboBox SelectedValue="{Binding Ano}"
+                                  SelectedValuePath="Content"
+                                  Width="130"
+                                  materialDesign:HintAssist.Hint="Ano"
+                                  Style="{StaticResource MaterialDesignOutlinedComboBox}">
+                            <ComboBoxItem Content="2026"/>
+                            <ComboBoxItem Content="2027"/>
+                            <ComboBoxItem Content="2028"/>
+                            <ComboBoxItem Content="2029"/>
+                            <ComboBoxItem Content="2030"/>
+                            <ComboBoxItem Content="2031"/>
+                            <ComboBoxItem Content="2032"/>
+                            <ComboBoxItem Content="2033"/>
+                            <ComboBoxItem Content="2034"/>
+                            <ComboBoxItem Content="2035"/>
+                        </ComboBox>
+
+                    </StackPanel>
+                </StackPanel>
+
+                <TextBox Text="{Binding CVV, UpdateSourceTrigger=PropertyChanged}"
+                         MaxLength="3"
+                         Margin="0,8"
+                         materialDesign:HintAssist.Hint="CVV * (3 dígitos)"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"/>
+
+                <Button Content="_Confirmar Pagamento"
+                        Command="{Binding Receber}"
+                        Style="{StaticResource MaterialDesignRaisedLightButton}"
+                        Background="#388E3C"
+                        Foreground="White"
+                        FontSize="16"
+                        Height="48"
+                        Margin="0,20,0,0"/>
+
             </StackPanel>
-
-            <TextBox Text="{Binding CVV, UpdateSourceTrigger=PropertyChanged}"
-                     MaxLength="3"
-                     Margin="0,8"
-                     materialDesign:HintAssist.Hint="CVV * (3 dígitos)"
-                     Style="{StaticResource MaterialDesignOutlinedTextBox}"/>
-
-            <Button Content="_Confirmar Pagamento"
-                    Command="{Binding Receber}"
-                    Style="{StaticResource MaterialDesignRaisedLightButton}"
-                    Background="#388E3C"
-                    Foreground="White"
-                    FontSize="16"
-                    Height="48"
-                    Margin="0,20,0,0"/>
-
-        </StackPanel>
-    </Grid>
+        </Grid>
+    </Viewbox>
 </UserControl>
